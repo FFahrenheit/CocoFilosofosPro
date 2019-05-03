@@ -22,10 +22,16 @@ public class View extends JFrame {
 
     View() 
     {
-        width = 400;
-        height = 400;
+        width = 500;
+        height = 500;
         initWindow();
+        initComponents();
         this.setLayout(null);
+    }
+    
+    protected void initComponents()
+    {
+        return;
     }
 
     protected void initWindow() 
@@ -38,9 +44,9 @@ public class View extends JFrame {
         this.getContentPane().setBackground(color);
 
         begin = new JButton();
-        begin.setBounds(340, 360, 50, 20);
-        Font font = new Font("Arial", Font.PLAIN, 15);
-        begin.setText("Bienvenido");
+        begin.setBounds(370, 420, 100, 30);
+        Font font = new Font("Arial", Font.PLAIN, 12);
+        begin.setText("Empezar");
         begin.setFont(font);
         
         begin.addActionListener(e->

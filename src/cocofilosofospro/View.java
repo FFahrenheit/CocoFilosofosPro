@@ -8,10 +8,12 @@ package cocofilosofospro;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Image;
+import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -26,13 +28,15 @@ public class View extends JFrame {
     protected ImageIcon eating;
     protected ImageIcon thinking;
     protected ImageIcon waiting;
-    protected ImageIcon free;
+    protected ImageIcon freeImage;
     protected ImageIcon using;
+    protected ImageIcon tableImage;
     protected int width;
     protected int height;
     protected JButton begin;
     protected JLabel[] philosophers;
     protected JLabel[] forks;
+    protected JLabel table;
 
     View() {
         width = 500;
@@ -54,32 +58,60 @@ public class View extends JFrame {
         thinking = getImage("https://www.dictionary.com/e/wp-content/uploads/2018/03/Thinking_Face_Emoji-Emoji-Island.png", 50, 50);
         waiting = getImage("https://www.dictionary.com/e/wp-content/uploads/2018/03/Thinking_Face_Emoji-Emoji-Island.png", 50, 50);
 
-        free = getImage("https://i2.wp.com/www.eatlikeabeast.com/wp-content/uploads/2016/06/cropped-fork-knife-emoji.png", 50, 50);
-        using = getImage("https://i2.wp.com/www.eatlikeabeast.com/wp-content/uploads/2016/06/cropped-fork-knife-emoji.png", 50, 50);
+        freeImage = getImage("https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/160/facebook/92/hocho_1f52a.png", 40, 40);
+        using = getImage("https://www.swankyinteriors.co.uk/images/products/1439243510-73640900.jpg", 40, 40);
+        
+        tableImage = getImage("https://www.crossfurniture.co.uk/wp-content/uploads/2018/06/Ponderosa-Grey.png",150,150);
     }
 
     protected ImageIcon getImage(String source, int w, int h) {
         try {
-            ImageIcon icon = new ImageIcon(new URL(source));
-            Image resize = icon.getImage();
+            //ImageIcon icon = new ImageIcon(new URL(source));
+            //Image resize = icon.getImage();
+            Image resize = ImageIO.read(new URL(source).openStream());
             resize = resize.getScaledInstance(w, h, java.awt.Image.SCALE_SMOOTH);
             return new ImageIcon(resize);
         } catch (MalformedURLException ex) {
             System.out.println("Error al obtener URL: " + ex.toString());
             return null;
+        } catch (IOException ex) {
+            Logger.getLogger(View.class.getName()).log(Level.SEVERE, null, ex);
+            return null;
         }
     }
 
-    protected void initComponents() {
+    protected void initComponents() 
+    {
+        Integer posPh[][] = { 
+        {182,10},
+        {340,150},
+        {300,300},
+        {100,300},
+        {40,150}
+        };
         for (int i = 0; i < philosophers.length; i++) {
             philosophers[i] = new JLabel(thinking);
-            philosophers[i].setBounds(10 + i * 60, 10, 50, 50);
-
-            //this.getContentPane().add(philosophers[i]);
+            philosophers[i].setBounds(posPh[i][0] , posPh[i][1], 50, 50);
             this.add(philosophers[i]);
-
-            System.out.println("Icono agregado");
         }
+        Integer posFork[][] = {
+            {(posPh[0][0]+posPh[1][0])/2 ,(posPh[0][1]+posPh[1][1])/2},
+            {(posPh[1][0]+posPh[2][0])/2,(posPh[1][1]+posPh[2][1])/2},
+            {(posPh[2][0]+posPh[3][0])/2,(posPh[2][1]+posPh[3][1])/2},
+            {(posPh[3][0]+posPh[4][0])/2,(posPh[3][1]+posPh[4][1])/2},
+            {(posPh[4][0]+posPh[0][0])/2,(posPh[4][1]+posPh[0][1])/2}
+        };
+        for(int i=0; i<forks.length; i++)
+        {
+            forks[i] = new JLabel(freeImage);
+            forks[i].setBounds(posFork[i][0] , posFork[i][1], 40, 40);
+            this.add(forks[i]);
+        }
+        
+        table = new JLabel(tableImage);
+        table.setBounds(140,110,150,150);
+        this.add(table);
+        
     }
 
     protected void initWindow() {
@@ -87,7 +119,7 @@ public class View extends JFrame {
         this.setSize(width, height);
         this.setTitle("Cena de filósofos");
 
-        Color color = new Color(255, 255, 255, 255);
+        Color color = new Color(240, 240, 240, 255);
         this.getContentPane().setBackground(color);
 
         begin = new JButton();

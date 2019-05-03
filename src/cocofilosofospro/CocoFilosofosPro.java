@@ -16,6 +16,7 @@ public class CocoFilosofosPro {
      */
     public static void main(String[] args) 
     {
+        System.out.println("Ya empezó");
         View view = new View();
         view.setVisible(true);
     }

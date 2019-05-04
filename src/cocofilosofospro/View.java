@@ -23,6 +23,7 @@ public class View extends JFrame
     protected JLabel table;
     protected JLabel[] philosophers;
     protected JLabel[] forks;
+    protected 
 
     View() {
         width = 500;
@@ -47,7 +48,7 @@ public class View extends JFrame
         {40,150}
         };
         for (int i = 0; i < philosophers.length; i++) {
-            philosophers[i] = new JLabel(new Images("eating",50,50).getImage());
+            philosophers[i] = new JLabel(new Images("waiting",50,50).getImage());
             philosophers[i].setBounds(posPh[i][0] , posPh[i][1], 50, 50);
             this.add(philosophers[i]);
         }
@@ -60,7 +61,7 @@ public class View extends JFrame
         };
         for(int i=0; i<forks.length; i++)
         {
-            forks[i] = new JLabel(new Images("using",40,40).getImage());
+            forks[i] = new JLabel(new Images("free",40,40).getImage());
             forks[i].setBounds(posFork[i][0] , posFork[i][1], 40, 40);
             this.add(forks[i]);
         }
@@ -87,12 +88,13 @@ public class View extends JFrame
         begin.addActionListener(e  -> {
             startEating();
         });
-
         this.add(begin);
     }
 
-    protected void startEating() {
+    protected void startEating() 
+    {
         System.out.println("Empezando...");
+        BackEnd backEnd = new BackEnd(philosophers, forks, new int[]{10,10});
     }
 
 }

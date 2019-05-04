@@ -5,33 +5,67 @@
  */
 package cocofilosofospro;
 
+import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.locks.ReentrantLock;
 import javax.swing.JLabel;
 
 /**
- *
+ * Clase manipualadora de los
+ * tenedores
  * @author ivan_
  */
 public class Fork 
 {
-    public JLabel image;
-    public String status;
+    private JLabel image;
+    private String status;
+    private ReentrantLock used;
+    private AtomicBoolean inUse;
     
     public Fork(JLabel reference)
     {
+        this.inUse = new AtomicBoolean(false);
         this.image = reference;
         this.status = "free";
         this.image.setIcon(new Images(status,40,40).getImage());
+        this.used = new ReentrantLock();
     }
     
-    public void using()
+    public boolean tryHold()
     {
-        this.status = "using";
-        this.image.setIcon(new Images(status,40,40).getImage());
+        return used.tryLock();
+    }
+    
+    public void getStatus()
+    {
+        if(inUse.get())
+        {
+            this.status = "free";
+            this.image.setIcon(new Images(status,40,40).getImage());
+        }
+        else 
+        {
+            this.status = "using";
+            this.image.setIcon(new Images(status,40,40).getImage());
+        }
+    }
+    
+    public AtomicBoolean isUsing()
+    {
+        return this.inUse;
+    }
+    
+    public boolean isUsedForMe()
+    {
+        return used.isHeldByCurrentThread();
     }
     
     public void free()
     {
-        this.status = "free";           
-        this.image.setIcon(new Images(status,40,40).getImage());
+        if (used.isHeldByCurrentThread()) 
+        {
+            used.unlock();
+            this.status = "free";
+            this.image.setIcon(new Images(status,40,40).getImage());
+        }
     }
 }

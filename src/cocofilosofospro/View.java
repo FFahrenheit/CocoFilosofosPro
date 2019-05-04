@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package cocofilosofospro;
 
 import java.awt.Color;
@@ -12,7 +7,10 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 
 /**
- *
+ * Parte de la vista del programa,
+ * maneja todo lo visible y envía 
+ * los componentes al "back end"
+ * que lo manipulará.
  * @author ivan_
  */
 public class View extends JFrame 
@@ -25,6 +23,12 @@ public class View extends JFrame
     protected JLabel[] forks;
     protected int[] durations;
 
+    /**
+     * Aquí se crea la ventana y se llaman a las
+     * funciones auxiliares para crear la vista
+     * @param time Los tiempos para sincronizar 
+     * el programa
+     */
     View(int[] time) {
         durations = time;
         width = 500;
@@ -39,6 +43,10 @@ public class View extends JFrame
         this.setLayout(null);
     }
 
+    /**
+     * Se inicializan los filósofos, la mesa
+     * y los tenedores a la vista
+     */
     protected void initComponents() 
     {
         int posPh[][] = { 
@@ -71,7 +79,11 @@ public class View extends JFrame
         table.setBounds(140,110,150,150);
         this.add(table);
     }
-
+    
+    /**
+     * Se inicializa la ventana como tal
+     * con su menú principal
+     */
     protected void initWindow() 
     {
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -92,7 +104,13 @@ public class View extends JFrame
         });
         this.add(begin);
     }
-
+    
+    
+    /**
+     * Aquí se instancia a la parte
+     * lógica del programa para empezar a que
+     * corran los hilos
+     */
     protected void startEating() 
     {
         System.out.println("Empezando...");

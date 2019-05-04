@@ -1,15 +1,13 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package cocofilosofospro;
 
 import java.util.concurrent.Semaphore;
 import javax.swing.JLabel;
 
 /**
- *
+ * En esta clase se manipula el 
+ * control total de los hilos existentes
+ * y se crean las relaciones entre la 
+ * vista y objetos
  * @author ivan_
  */
 public class BackEnd
@@ -19,6 +17,11 @@ public class BackEnd
     protected Thread[] thread;
     public static Semaphore coach = new Semaphore(0);
     
+    /***
+     * Se crean los hilos que manejará
+     * cada filósofo y el hilo que lo 
+     * controlará, un semáforo.
+     */
     public void start()
     {
         for(int i=0; i<philosopher.length;i++)
@@ -28,11 +31,30 @@ public class BackEnd
         }
         new Thread(()->
                 {
+                    for(int i=0; i<fork.length;i++)
+                    {
+                        fork[i].setImage("free");
+                    }
                     while(true)
                     {
-                        for(int i=0; i<fork.length;i++)
+                        boolean isUsed[] =  {false,false,false,false,false}; 
+                        for (int i = 0; i < philosopher.length; i++) 
                         {
-                            fork[i].getStatus();
+                            if(philosopher[i].status.equals("eating"))
+                            {
+                                philosopher[i].leftFork.setImage("using");                           
+                                philosopher[i].rightFork.setImage("using");
+                                isUsed[philosopher[i].rightFork.id] = true;
+                                isUsed[philosopher[i].leftFork.id] = true;
+                            }
+                        }
+                        for (int i = 0; i < philosopher.length; i++) 
+                        {
+                            if(!isUsed[i])
+                            {
+                                fork[i].setImage("free");
+                            }
+                            
                         }
                         try 
                         {
@@ -45,6 +67,14 @@ public class BackEnd
                 }).start();
     }
     
+    /***
+     * Se inicializan los componentes controladores
+     * con una vista definda, se crean filósofos con cierto
+     * tiempo de duración y tenedores.
+     * @param ph Vistas de filósofos
+     * @param fork Vistas de tenedores
+     * @param duration Arreglo de duraciones correspondientes
+     */
     public BackEnd(JLabel[] ph, JLabel[] fork, int[] duration)
     {
         this.thread = new Thread[ph.length];
@@ -52,7 +82,7 @@ public class BackEnd
         this.philosopher = new Philosopher[ph.length];
         for (int i = 0; i < fork.length; i++) 
         {
-            this.fork[i] = new Fork(fork[i]);
+            this.fork[i] = new Fork(fork[i],i);
         }
         for (int i = 0; i < ph.length; i++) 
         {

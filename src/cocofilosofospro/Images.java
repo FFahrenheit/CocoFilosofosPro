@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package cocofilosofospro;
 
 import java.awt.Image;
@@ -20,16 +15,33 @@ public class Images {
 
     private ImageIcon image;
 
+    /**
+     * Asigna una imagen con una clave y un alto y largo
+     * @param form clave
+     * @param w largo
+     * @param h alto
+     */
     public Images(String form, int w, int h) 
     {
         setImage(form,w,h);
     }
 
+    /**
+     * Devuelve el ícono generado
+     * @return icono generado
+     */
     public ImageIcon getImage() 
     {
         return this.image;
     }
-
+    
+    /**
+     * Basado en una clave, obtiene una imagen 
+     * redimensionada 
+     * @param form clave
+     * @param w largo
+     * @param h alto
+     */
     public void setImage(String form, int w, int h) {
         String source = "src/images/"+form+".png";
         File file = new File(source);

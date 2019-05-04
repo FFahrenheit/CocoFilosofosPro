@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package cocofilosofospro;
 
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -17,17 +12,25 @@ import javax.swing.JLabel;
 public class Fork 
 {
     private JLabel image;
-    private String status;
+    public String status;
     private ReentrantLock used;
     private AtomicBoolean inUse;
+    public int id;
     
-    public Fork(JLabel reference)
+    public Fork(JLabel reference, int id)
     {
+        this.id = id;
         this.inUse = new AtomicBoolean(false);
         this.image = reference;
         this.status = "free";
         this.image.setIcon(new Images(status,40,40).getImage());
         this.used = new ReentrantLock();
+    }
+    
+    public void setImage(String st)
+    {
+        this.image.setIcon(new Images(st,40,40).getImage());
+        this.status = st;
     }
     
     public boolean tryHold()
@@ -39,14 +42,13 @@ public class Fork
     {
         if(inUse.get())
         {
-            this.status = "free";
-            this.image.setIcon(new Images(status,40,40).getImage());
+            this.status = "using";
         }
         else 
         {
-            this.status = "using";
-            this.image.setIcon(new Images(status,40,40).getImage());
+            this.status = "free";
         }
+        this.image.setIcon(new Images(this.status,40,40).getImage());
     }
     
     public AtomicBoolean isUsing()
@@ -54,18 +56,11 @@ public class Fork
         return this.inUse;
     }
     
-    public boolean isUsedForMe()
-    {
-        return used.isHeldByCurrentThread();
-    }
-    
     public void free()
     {
         if (used.isHeldByCurrentThread()) 
         {
             used.unlock();
-            this.status = "free";
-            this.image.setIcon(new Images(status,40,40).getImage());
         }
     }
 }

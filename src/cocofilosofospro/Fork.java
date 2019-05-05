@@ -12,10 +12,10 @@ import javax.swing.JLabel;
 public class Fork 
 {
     private JLabel image;
-    public String status;
+    private String status;
     private ReentrantLock used;
     private AtomicBoolean inUse;
-    public int id;
+    private int id;
     
     public Fork(JLabel reference, int id)
     {
@@ -38,7 +38,7 @@ public class Fork
         return used.tryLock();
     }
     
-    public void getStatus()
+    /*public void getStatus()
     {
         if(inUse.get())
         {
@@ -49,7 +49,7 @@ public class Fork
             this.status = "free";
         }
         this.image.setIcon(new Images(this.status,40,40).getImage());
-    }
+    }*/
     
     public AtomicBoolean isUsing()
     {

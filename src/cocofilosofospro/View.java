@@ -100,7 +100,10 @@ public class View extends JFrame
         begin.setFont(font);
 
         begin.addActionListener(e  -> {
-            startEating();
+            System.out.println("Empezando...");
+            BackEnd backEnd = new BackEnd(philosophers, forks, durations);
+            backEnd.start();
+            begin.setEnabled(false);        
         });
         this.add(begin);
     }
@@ -111,11 +114,5 @@ public class View extends JFrame
      * lógica del programa para empezar a que
      * corran los hilos
      */
-    protected void startEating() 
-    {
-        System.out.println("Empezando...");
-        BackEnd backEnd = new BackEnd(philosophers, forks, durations);
-        backEnd.start();
-    }
 
 }

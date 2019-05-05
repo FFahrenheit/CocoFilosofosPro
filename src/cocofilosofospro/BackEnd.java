@@ -31,13 +31,13 @@ public class BackEnd
         }
         new Thread(()->
                 {
-                    for(int i=0; i<fork.length;i++)
+                    /*for(int i=0; i<fork.length;i++)
                     {
                         fork[i].setImage("free");
-                    }
+                    }*/
                     while(true)
                     {
-                        boolean isUsed[] =  {false,false,false,false,false}; 
+                        /*boolean isUsed[] =  {false,false,false,false,false}; 
                         for (int i = 0; i < philosopher.length; i++) 
                         {
                             if(philosopher[i].status.equals("eating"))
@@ -55,7 +55,7 @@ public class BackEnd
                                 fork[i].setImage("free");
                             }
                             
-                        }
+                        }*/
                         try 
                         {
                             coach.acquire();

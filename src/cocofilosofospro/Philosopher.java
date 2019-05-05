@@ -10,12 +10,12 @@ import javax.swing.JLabel;
  */
 public class Philosopher implements Runnable {
 
-    public JLabel image;
-    public String status;
-    public int time;
-    public Fork leftFork, rightFork;
-    public int id;
-    public boolean full = false;
+    private JLabel image;
+    private String status;
+    private int time;
+    private Fork leftFork, rightFork;
+    private int id;
+    private boolean full = false;
 
     /**
      * Asigna los tenedores. Recordar que son
@@ -139,6 +139,8 @@ public class Philosopher implements Runnable {
                     if (rightFork.tryHold()) {
                         try {
                             BackEnd.coach.release();
+                            this.leftFork.setImage("using");
+                            this.rightFork.setImage("using");
                             eating();
                             this.leftFork.isUsing().getAndSet(true);
                             this.rightFork.isUsing().getAndSet(true);
@@ -146,6 +148,8 @@ public class Philosopher implements Runnable {
                         } catch (InterruptedException ex) {
                             System.out.println("Error: " + ex.getMessage());
                         } finally {
+                            this.leftFork.setImage("free");
+                            this.rightFork.setImage("free");
                             this.leftFork.isUsing().getAndSet(false);
                             this.rightFork.isUsing().getAndSet(false);
                             rightFork.free();

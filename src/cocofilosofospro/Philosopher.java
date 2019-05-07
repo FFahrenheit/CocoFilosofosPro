@@ -15,7 +15,7 @@ public class Philosopher implements Runnable {
     private int time;
     private Fork leftFork, rightFork;
     private int id;
-    private boolean full = false;
+    private Images source;
 
     /**
      * Asigna los tenedores. Recordar que son
@@ -36,12 +36,14 @@ public class Philosopher implements Runnable {
      * @param time Tiempo que durará
      * @param id Identificador único para logs
      */
-    public Philosopher(JLabel reference, int time, int id) {
+    public Philosopher(JLabel reference, int time, int id, Images source) 
+    {
+        this.source = source;
         this.id = id;
         this.time = time;
         this.image = reference;
         this.status = "thinking";
-        this.image.setIcon(new Images(status, 50, 50).getImage());
+        this.image.setIcon(source.getImage(status));
     }
 
     /**
@@ -77,7 +79,7 @@ public class Philosopher implements Runnable {
     void updateActivity(String state) {
         System.out.println("Philosopher " + id + " is " + state);
         this.status = state;
-        this.image.setIcon(new Images(status, 50, 50).getImage());
+        this.image.setIcon(source.getImage(status));
     }
 
     /**
@@ -88,15 +90,14 @@ public class Philosopher implements Runnable {
     public void eating() throws InterruptedException {
         updateActivity("eating");
         Thread.sleep(time);
-        this.full = true;
         waiting();
     }
 
     /**
      * Es el manejo del hilo.
-     * Primero espera y al acabar sale del semáforo,
-     * enseguida trata de comer y cuando acabe sale
-     * del semáforo
+     * Primero piensa,
+     * enseguida trata de comer y cuando acabe 
+     * espera hasta que le toque pensar de nuevo
      * Se repite infinitamente
      */
     @Override
@@ -104,9 +105,7 @@ public class Philosopher implements Runnable {
         while (true) {
             try {
                 thinking();
-                BackEnd.coach.release();
                 tryEat();
-                BackEnd.coach.release();
             } catch (InterruptedException e) {
                 System.out.println("Error: " + e.getMessage());
             }
@@ -116,10 +115,10 @@ public class Philosopher implements Runnable {
     /**
      * Primero, verifica que los tenedores
      * estén disponibles, si es su primera iteración va a esperar 
-     * primero y después avisar al semáforo.
+     * primero.
      * Enseguida, se verifica si el tenedor izquierdo está siendo usado, 
      * si no lo está, verifica si el derecho está siendo usado, si no 
-     * lo está, avisa al semáforo un uso, enseguida empieza a comer,
+     * lo está, empieza a comer,
      * y avisa a los tenedores que están siendo usados, al acabar
      * libera ambos tenedores y los suelta disponibles para la
      * siguiente operacion.
@@ -130,7 +129,6 @@ public class Philosopher implements Runnable {
             while (leftFork.isUsing().get() || rightFork.isUsing().get()) {
                 if (first) {
                     waiting();
-                    BackEnd.coach.release();
                     first = false;
                 }
             }
@@ -138,7 +136,6 @@ public class Philosopher implements Runnable {
                 try {
                     if (rightFork.tryHold()) {
                         try {
-                            BackEnd.coach.release();
                             this.leftFork.setImage("using");
                             this.rightFork.setImage("using");
                             eating();

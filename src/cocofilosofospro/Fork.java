@@ -16,20 +16,22 @@ public class Fork
     private ReentrantLock used;
     private AtomicBoolean inUse;
     private int id;
+    private Images source;
     
-    public Fork(JLabel reference, int id)
+    public Fork(JLabel reference, int id, Images source)
     {
+        this.source = source;
         this.id = id;
         this.inUse = new AtomicBoolean(false);
         this.image = reference;
         this.status = "free";
-        this.image.setIcon(new Images(status,40,40).getImage());
+        this.image.setIcon(source.getImage(status));
         this.used = new ReentrantLock();
     }
     
     public void setImage(String st)
     {
-        this.image.setIcon(new Images(st,40,40).getImage());
+        this.image.setIcon(source.getImage(st));
         this.status = st;
     }
     

@@ -11,28 +11,53 @@ import javax.swing.ImageIcon;
  * gráficos como imágenes
  * @author ivan_
  */
-public class Images {
+public class Images 
+{
+    private ImageIcon free;
+    private ImageIcon using;
+    private ImageIcon thinking;
+    private ImageIcon waiting;
+    private ImageIcon eating;
+    private ImageIcon table;
 
-    private ImageIcon image;
 
     /**
-     * Asigna una imagen con una clave y un alto y largo
-     * @param form clave
-     * @param w largo
-     * @param h alto
+     * Instancia todas las imágenes
+     * posibles
      */
-    public Images(String form, int w, int h) 
+    public Images() 
     {
-        setImage(form,w,h);
+        free = setImage("free",40,40);
+        using = setImage("using",40,40);
+        thinking = setImage("thinking",50,50);
+        waiting = setImage("waiting",50,50);
+        eating = setImage("eating",50,50);
+        table = setImage("table",150,150);
     }
 
     /**
      * Devuelve el ícono generado
      * @return icono generado
      */
-    public ImageIcon getImage() 
+    public ImageIcon getImage(String form) 
     {
-        return this.image;
+        switch(form)
+        {
+            case "free":
+                return this.free;
+            case "using":
+                return this.using;
+            case "thinking":
+                return this.thinking;
+            case "waiting":
+                return this.waiting;
+            case "eating":
+                return this.eating;
+            case "table":
+                return this.table;
+            default:
+                return null;
+        }
     }
     
     /**
@@ -42,25 +67,26 @@ public class Images {
      * @param w largo
      * @param h alto
      */
-    public void setImage(String form, int w, int h) {
+    public ImageIcon setImage(String form, int w, int h) 
+    {
         String source = "src/images/"+form+".png";
         File file = new File(source);
         try 
         {
             Image resize = ImageIO.read(file);
             resize = resize.getScaledInstance(w, h, java.awt.Image.SCALE_SMOOTH);
-            this.image = new ImageIcon(resize);
+            return new ImageIcon(resize);
         } 
         catch (IOException ex) 
         {
             System.out.println("Error: " + ex.toString());
             if(source.equals("default"))
             {
-                this.image = null; //Avoid infinite loop
+                return null; //Avoid infinite loop
             }
             else 
             {
-                setImage("default",w,h);
+                return setImage("default",w,h);
             }
         }
     }

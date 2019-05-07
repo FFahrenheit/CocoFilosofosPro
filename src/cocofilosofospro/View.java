@@ -22,6 +22,7 @@ public class View extends JFrame
     protected JLabel[] philosophers;
     protected JLabel[] forks;
     protected int[] durations;
+    protected Images source;
 
     /**
      * Aquí se crea la ventana y se llaman a las
@@ -30,6 +31,7 @@ public class View extends JFrame
      * el programa
      */
     View(int[] time) {
+        source = new Images();
         durations = time;
         width = 500;
         height = 500;
@@ -57,7 +59,7 @@ public class View extends JFrame
         {40,150} //Left midle
         };
         for (int i = 0; i < philosophers.length; i++) {
-            philosophers[i] = new JLabel(new Images("waiting",50,50).getImage());
+            philosophers[i] = new JLabel(source.getImage("waiting"));
             philosophers[i].setBounds(posPh[i][0] , posPh[i][1], 50, 50);
             this.add(philosophers[i]);
         }
@@ -70,12 +72,12 @@ public class View extends JFrame
         };
         for(int i=0; i<forks.length; i++)
         {
-            forks[i] = new JLabel(new Images("free",40,40).getImage());
+            forks[i] = new JLabel(source.getImage("free"));
             forks[i].setBounds(posFork[i][0] , posFork[i][1], 40, 40);
             this.add(forks[i]);
         }
         
-        table = new JLabel(new Images("table",150,150).getImage());
+        table = new JLabel(source.getImage("table"));
         table.setBounds(140,110,150,150);
         this.add(table);
     }
@@ -100,19 +102,12 @@ public class View extends JFrame
         begin.setFont(font);
 
         begin.addActionListener(e  -> {
+            begin.setEnabled(false);
             System.out.println("Empezando...");
-            BackEnd backEnd = new BackEnd(philosophers, forks, durations);
+            BackEnd backEnd = new BackEnd(philosophers, forks, durations, source);
             backEnd.start();
-            begin.setEnabled(false);        
         });
         this.add(begin);
     }
-    
-    
-    /**
-     * Aquí se instancia a la parte
-     * lógica del programa para empezar a que
-     * corran los hilos
-     */
 
 }

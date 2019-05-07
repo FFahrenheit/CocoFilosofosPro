@@ -56,7 +56,7 @@ public class View extends JFrame
         {340,150}, //Right middle
         {300,300}, //Right bottom
         {100,300}, //Left bottom
-        {40,150} //Left midle
+        {40,150} //Left middle
         };
         for (int i = 0; i < philosophers.length; i++) {
             philosophers[i] = new JLabel(source.getImage("waiting"));
@@ -65,10 +65,10 @@ public class View extends JFrame
         }
         int posFork[][] = {
             {(posPh[0][0]+posPh[1][0])/2 ,(posPh[0][1]+posPh[1][1])/2}, //Right top
-            {(posPh[1][0]+posPh[2][0])/2,(posPh[1][1]+posPh[2][1])/2}, //Middle 
-            {(posPh[2][0]+posPh[3][0])/2,(posPh[2][1]+posPh[3][1])/2}, //
-            {(posPh[3][0]+posPh[4][0])/2,(posPh[3][1]+posPh[4][1])/2}, //
-            {(posPh[4][0]+posPh[0][0])/2,(posPh[4][1]+posPh[0][1])/2} //
+            {(posPh[1][0]+posPh[2][0])/2,(posPh[1][1]+posPh[2][1])/2}, //Right middle
+            {(posPh[2][0]+posPh[3][0])/2,(posPh[2][1]+posPh[3][1])/2}, //Right bottom
+            {(posPh[3][0]+posPh[4][0])/2,(posPh[3][1]+posPh[4][1])/2}, //Left bottom
+            {(posPh[4][0]+posPh[0][0])/2,(posPh[4][1]+posPh[0][1])/2} //Left middle
         };
         for(int i=0; i<forks.length; i++)
         {
@@ -78,7 +78,7 @@ public class View extends JFrame
         }
         
         table = new JLabel(source.getImage("table"));
-        table.setBounds(140,110,150,150);
+        table.setBounds(140,120,150,150);
         this.add(table);
     }
     

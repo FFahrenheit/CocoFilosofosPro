@@ -20,7 +20,6 @@ public class Images
     private ImageIcon eating;
     private ImageIcon table;
 
-
     /**
      * Instancia todas las imágenes
      * posibles

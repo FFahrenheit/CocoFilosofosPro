@@ -12,50 +12,25 @@ import javax.swing.JLabel;
 public class Fork 
 {
     private JLabel image;
-    private String status;
     private ReentrantLock used;
-    private AtomicBoolean inUse;
-    private int id;
     private Images source;
     
-    public Fork(JLabel reference, int id, Images source)
+    public Fork(JLabel reference, Images source)
     {
         this.source = source;
-        this.id = id;
-        this.inUse = new AtomicBoolean(false);
         this.image = reference;
-        this.status = "free";
-        this.image.setIcon(source.getImage(status));
+        this.setImage("free");
         this.used = new ReentrantLock();
     }
     
     public void setImage(String st)
     {
         this.image.setIcon(source.getImage(st));
-        this.status = st;
     }
     
     public boolean tryHold()
     {
         return used.tryLock();
-    }
-    
-    /*public void getStatus()
-    {
-        if(inUse.get())
-        {
-            this.status = "using";
-        }
-        else 
-        {
-            this.status = "free";
-        }
-        this.image.setIcon(new Images(this.status,40,40).getImage());
-    }*/
-    
-    public AtomicBoolean isUsing()
-    {
-        return this.inUse;
     }
     
     public void free()

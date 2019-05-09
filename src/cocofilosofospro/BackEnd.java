@@ -43,7 +43,7 @@ public class BackEnd
         this.philosopher = new Philosopher[ph.length];
         for (int i = 0; i < fork.length; i++) 
         {
-            this.fork[i] = new Fork(fork[i],i,source);
+            this.fork[i] = new Fork(fork[i],source);
         }
         for (int i = 0; i < ph.length; i++) 
         {

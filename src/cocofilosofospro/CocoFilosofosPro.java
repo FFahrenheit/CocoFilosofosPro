@@ -13,7 +13,7 @@ public class CocoFilosofosPro {
      */
     public static void main(String[] args) 
     {
-        int durations[] = {1000,1000,1000,1000,1000};
+        int durations[] = {1000,2000,3000,4000,5000};
         View view = new View(durations);
         view.setVisible(true);
     }

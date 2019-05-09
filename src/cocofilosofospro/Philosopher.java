@@ -124,14 +124,7 @@ public class Philosopher implements Runnable {
      * siguiente operacion.
      */
     public void tryEat() {
-        boolean first = true;
         while (true) {
-            while (leftFork.isUsing().get() || rightFork.isUsing().get()) {
-                if (first) {
-                    waiting();
-                    first = false;
-                }
-            }
             if (leftFork.tryHold()) {
                 try {
                     if (rightFork.tryHold()) {
@@ -139,16 +132,12 @@ public class Philosopher implements Runnable {
                             this.leftFork.setImage("using");
                             this.rightFork.setImage("using");
                             eating();
-                            this.leftFork.isUsing().getAndSet(true);
-                            this.rightFork.isUsing().getAndSet(true);
                             return;
                         } catch (InterruptedException ex) {
                             System.out.println("Error: " + ex.getMessage());
                         } finally {
                             this.leftFork.setImage("free");
                             this.rightFork.setImage("free");
-                            this.leftFork.isUsing().getAndSet(false);
-                            this.rightFork.isUsing().getAndSet(false);
                             rightFork.free();
                         }
                     }
